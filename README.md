@@ -26,7 +26,7 @@
 - [Iterator] Set Iterator at End (Tail)
 - [Iterator] Determine if null (Nullptr)
 
-### ***Iterator Class**
+### **Iterator Class**
 - Constructor
 - [Template] Overload * operator
 - [Iterator] Overload ++ operator
