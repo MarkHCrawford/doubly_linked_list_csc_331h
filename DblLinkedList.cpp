@@ -68,11 +68,11 @@ void DblLinkedList<T>::insertItemFront(T item)
     {
         head->previous = newNode;
     }
-    head = newNode;
     if (tail == nullptr)
     {
         tail = newNode;
     }
+    head = newNode;
     length++;
 }
 
@@ -81,16 +81,15 @@ template <class T>
 void DblLinkedList<T>::insertItemBack(T item) {
     node<T>* newNode = new node<T>;
     newNode->info = item;
-
+    newNode->next = nullptr;
     // Handle empty list case
     if (tail == nullptr) {
-        newNode->next = nullptr;
         newNode->previous = nullptr;
-        head = newNode;
-        tail = newNode;
-    } else {
+        head = tail = newNode;
+    } 
+    else 
+    {
         // Regular insertion at the back
-        newNode->next = nullptr;
         newNode->previous = tail;
         tail->next = newNode;
         tail = newNode;
@@ -100,57 +99,31 @@ void DblLinkedList<T>::insertItemBack(T item) {
 }
 
 // Delete item from double linked list
-template <class T>
-void DblLinkedList<T>::deleteItem(T item)
-{
-    node<T> *current = head;
-    node<T> *prev = nullptr;
-    bool found = false;
-    while (current != nullptr && !found)
-    {
-        if (current->info == item)
-        {
-            found = true;
-        }
-        else
-        {
-            prev = current;
-            current = current->next;
-        }
-    }
-    if (found)
-    {
-        length--;
-        if (prev == nullptr)
-        {
-            head = current->next;
-            if (head == nullptr)
-            {
-                tail = nullptr;
-            }
-            else
-            {
-                head->previous = nullptr;
+template<typename T>
+void DblLinkedList<T>::deleteItem(T item) {
+    node<T>* current = head;
+    while (current) {
+        if (current->info == item) {
+            if (current == head) {
+                head = current->next;
+                if (head)
+                    head->previous = nullptr;
+                else
+                    tail = nullptr;
+            } else if (current == tail) {
+                tail = current->previous;
+                if (tail)
+                    tail->next = nullptr;
+                else
+                    head = nullptr;
+            } else {
+                current->previous->next = current->next;
+                current->next->previous = current->previous;
             }
             delete current;
+            return;
         }
-        else
-        {
-            prev->next = current->next;
-            if (current->next == nullptr)
-            {
-                tail = prev;
-            }
-            else
-            {
-                current->next->previous = prev;
-            }
-            delete current;
-        }
-    }
-    else
-    {
-        cout << "Item not found in list." << endl;
+        current = current->next;
     }
 }
 
